@@ -1,3 +1,4 @@
+```python
 import logging
 import os
 from flask import Flask
@@ -6,38 +7,63 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_session import Session
 
+# Extensions initialized without app (recommended pattern)
+db = SQLAlchemy()
+login = LoginManager()
+sess = Session()
+
+# Create Flask app
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# --- FIXED LOGGING SECTION ---
-# On Azure Linux, we log to /tmp to avoid permission errors in the root
+# ---------------- LOGGING CONFIGURATION ----------------
+# Azure Linux allows writing to /tmp and /home only
 log_path = os.path.join('/tmp', 'app.log')
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s %(levelname)s %(message)s'
-)
+# Prevent duplicate handlers if app reloads
+if not app.logger.handlers:
 
-# StreamHandler is essential for Azure "Log Stream" to work
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.INFO)
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s %(levelname)s %(message)s'
+    )
 
-file_handler = logging.FileHandler(log_path)
-file_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter(
+        '%(asctime)s %(levelname)s %(message)s'
+    )
 
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-stream_handler.setFormatter(formatter)
-file_handler.setFormatter(formatter)
+    # Stream handler (needed for Azure Log Stream)
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.INFO)
+    stream_handler.setFormatter(formatter)
 
-app.logger.addHandler(stream_handler)
-app.logger.addHandler(file_handler)
-app.logger.setLevel(logging.INFO)
-# ------------------------------
+    # File handler
+    file_handler = logging.FileHandler(log_path)
+    file_handler.setLevel(logging.INFO)
+    file_handler.setFormatter(formatter)
 
-Session(app)
-db = SQLAlchemy(app)
-login = LoginManager(app)
+    app.logger.addHandler(stream_handler)
+    app.logger.addHandler(file_handler)
+    app.logger.setLevel(logging.INFO)
+
+# -------------------------------------------------------
+
+# ---------------- SESSION CONFIGURATION ----------------
+# Explicit configuration prevents Azure container issues
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_FILE_DIR'] = '/tmp/flask_session'
+app.config['SESSION_PERMANENT'] = False
+app.config['SESSION_USE_SIGNER'] = True
+
+# -------------------------------------------------------
+
+# Initialize extensions with the app
+db.init_app(app)
+login.init_app(app)
+sess.init_app(app)
+
 login.login_view = 'login'
 
-# Circular import is fine at the bottom in Flask
+# Import routes (kept at bottom to avoid circular import)
 import FlaskWebProject.views
+```
