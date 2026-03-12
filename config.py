@@ -17,7 +17,8 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     CLIENT_SECRET = os.environ.get('CLIENT_SECRET') or 'CLIENT_SECRET_HERE'
-    AUTHORITY = "https://login.microsoftonline.com/f958e84a-92b8-439f-a62d-4f45996b6d07"
+    AUTHORITY = "https://login.microsoftonline.com/f958e84a-92b8-439f-a62d-4f45996b6d07"git status
+    
     CLIENT_ID = "2650d5c2-ddc3-4597-bb6b-0bdbf9ce04f9"
     REDIRECT_PATH = "/getAToken"
     SCOPE = ["User.Read"]
