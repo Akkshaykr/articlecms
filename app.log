@@ -569,3 +569,10 @@ Traceback (most recent call last):
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 sqlalchemy.exc.OperationalError: (pyodbc.OperationalError) ('08001', '[08001] [Microsoft][ODBC Driver 17 for SQL Server]TCP Provider: A non-recoverable error occurred during a database lookup.\r\n (11003) (SQLDriverConnect); [08001] [Microsoft][ODBC Driver 17 for SQL Server]Login timeout expired (0); [08001] [Microsoft][ODBC Driver 17 for SQL Server]Invalid connection string attribute (0); [08001] [Microsoft][ODBC Driver 17 for SQL Server]A network-related or instance-specific error has occurred while establishing a connection to SQL Server. Server is not found or not accessible. Check if instance name is correct and if SQL Server is configured to allow remote connections. For more information see SQL Server Books Online. (11003)')
 (Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-03-13 03:51:29,172 WARNING Invalid login attempt for user: 22adr005
+2026-03-13 03:51:38,285 WARNING Invalid login attempt for user: 22adr005
+2026-03-13 03:52:00,406 WARNING Invalid login attempt for user: akkshaykr32@gmail.com
+2026-03-13 03:52:24,161 WARNING Invalid login attempt for user: akkshaykr32@gmail.com
+2026-03-13 03:53:15,053 WARNING Invalid login attempt for user: akkshaykr32@gmail.com
+2026-03-13 03:54:12,164 WARNING Invalid login attempt for user: akkshaykr32@gmail.com
+2026-03-13 03:54:21,398 INFO User logged in successfully: admin
