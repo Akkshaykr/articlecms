@@ -7,20 +7,17 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_session import Session
 
-# Extensions initialized without app (recommended pattern)
+
 db = SQLAlchemy()
 login = LoginManager()
 sess = Session()
 
-# Create Flask app
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# ---------------- LOGGING CONFIGURATION ----------------
-# Azure Linux allows writing to /tmp and /home only
+
 log_path = os.path.join('/tmp', 'app.log')
 
-# Prevent duplicate handlers if app reloads
 if not app.logger.handlers:
 
     logging.basicConfig(
@@ -46,24 +43,19 @@ if not app.logger.handlers:
     app.logger.addHandler(file_handler)
     app.logger.setLevel(logging.INFO)
 
-# -------------------------------------------------------
 
-# ---------------- SESSION CONFIGURATION ----------------
-# Explicit configuration prevents Azure container issues
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_FILE_DIR'] = '/tmp/flask_session'
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_USE_SIGNER'] = True
 
-# -------------------------------------------------------
 
-# Initialize extensions with the app
 db.init_app(app)
 login.init_app(app)
 sess.init_app(app)
 
 login.login_view = 'login'
 
-# Import routes (kept at bottom to avoid circular import)
+
 import FlaskWebProject.views
-```
+
