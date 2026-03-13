@@ -12,15 +12,16 @@ class Config(object):
     SQL_SERVER = os.environ.get('SQL_SERVER') or 'akkshay.database.windows.net'
     SQL_DATABASE = os.environ.get('SQL_DATABASE') or 'akkshay'
     SQL_USER_NAME = os.environ.get('SQL_USER_NAME') or 'akkshay'
-    SQL_PASSWORD = os.environ.get('SQL_PASSWORD') or 'SQL_PASSWORD_HERE'
+    SQL_PASSWORD = os.environ.get('SQL_PASSWORD') or 'password@01'
+
     SQLALCHEMY_DATABASE_URI = (
-        'mssql+pyodbc://{}:{}@{}:1433/{}?driver=ODBC+Driver+17+for+SQL+Server'
-        '&Encrypt=yes&TrustServerCertificate=yes'
+        'mssql+pyodbc://{username}:{password}@{server}:1433/{database}'
+        '?driver=ODBC+Driver+17+for+SQL+Server&Encrypt=yes&TrustServerCertificate=yes'
     ).format(
-        os.environ.get('SQL_USER_NAME', 'akkshay'),
-        os.environ.get('SQL_PASSWORD', 'password@01'),
-        os.environ.get('SQL_SERVER', 'akkshay.database.windows.net'),
-        os.environ.get('SQL_DATABASE', 'akkshay')
+        username=os.environ.get('SQL_USER_NAME', 'akkshay'),
+        password=os.environ.get('SQL_PASSWORD', 'password@01'),
+        server=os.environ.get('SQL_SERVER', 'akkshay.database.windows.net'),
+        database=os.environ.get('SQL_DATABASE', 'akkshay')
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
